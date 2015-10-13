@@ -24,35 +24,24 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 public class ApplicationNode extends WebMvcConfigurerAdapter {
 	
 	private final static Logger LOG = Logger.getLogger(ApplicationNode.class);
-		
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry aRegistry) {
+        aRegistry.addResourceHandler("/**").addResourceLocations("/");
+    }
+
 	@Bean
 	public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry aRegistry) {
-    		aRegistry.addResourceHandler("/**").addResourceLocations("/");
-    }
-
 	@Bean
     public ViewResolver viewResolver() {
             UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
             viewResolver.setViewClass(JstlView.class);
-            viewResolver.setPrefix("WEB-INF/view/");
+            viewResolver.setPrefix("WEB-INF/jsp/");
             viewResolver.setSuffix(".jsp");
             return viewResolver;
     }
-
-    /////////////////////
-    // Message Templates
-    /////////////////////
-	@Bean(name="messageSource")
-	public ResourceBundleMessageSource resourceBundleMessageSource(){
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		String[] basenames = new String[]{"msg/notification"};
-		messageSource.setBasenames(basenames );
-		return messageSource;
-	}
 
 }
